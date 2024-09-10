@@ -34,6 +34,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "MyCategory")
 	void SameWithWeakPassword(const FString& str);
 
+	UFUNCTION(BlueprintCallable, Category = "MyCategory")
+	void noRegexFlags(const FString& str);
+
 	//Valiavle can call and edit from Blueprint
 	// Flag for compare with 500-worst-password
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
@@ -43,9 +46,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
 	int SymbolCount;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
+	bool noSymbolFlag;
+
 	// Count of Number
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
 	int NumberCount;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
+	bool noNumberFlag;
 
 	//Count of Alphabet
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
@@ -55,9 +64,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
 	int UpperAlphabetCount;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
+	bool noUpperAlphabetFlag;
+
 	//Count of Lowercase Alphabet
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
 	int LowerAlphabetCount;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
+	bool noLowerAlphabetFlag;
 
 
 };

@@ -101,3 +101,23 @@ void ARegexPW::SameWithWeakPassword(const FString& InputString)
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Failed to load file"));
 	}
 }
+
+void ARegexPW::noRegexFlags(const FString& InputString)
+{
+	if(SymbolCount == 0)
+	{
+		noSymbolFlag = true;
+	}
+	if(NumberCount == 0)
+	{
+		noNumberFlag = true;
+	}
+	if(UpperAlphabetCount == 0)
+	{
+		noUpperAlphabetFlag = true;
+	}
+	if(LowerAlphabetCount == 0)
+	{
+		noLowerAlphabetFlag = true;
+	}
+}
