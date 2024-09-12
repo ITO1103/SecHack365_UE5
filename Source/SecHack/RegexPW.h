@@ -37,6 +37,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "MyCategory")
 	void noRegexFlags(const FString& str);
 
+	UFUNCTION(BlueprintCallable, Category = "MyCategory")
+	void ChechPaswordStrength(const FString& str);
+
 	//Valiavle can call and edit from Blueprint
 	// Flag for compare with 500-worst-password
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")

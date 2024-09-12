@@ -4,6 +4,7 @@
 #include "RegexPW.h"
 #include <vector>
 #include <regex>
+#include "zxcvbn.h"
 
 // Sets default values
 ARegexPW::ARegexPW()
@@ -120,4 +121,13 @@ void ARegexPW::noRegexFlags(const FString& InputString)
 	{
 		noLowerAlphabetFlag = true;
 	}
+}
+
+
+void ARegexPW::ChechPaswordStrength(const FString& InputString)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ZXCVBN"));
+
+	ZxcvbnInit(nullptr);
+
 }
