@@ -13,23 +13,12 @@ public class SecHack : ModuleRules
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
-        // zxcvbn-c Library Path
-        string ZxcvbnPath = Path.Combine(ModuleDirectory, "ThirdParty", "zxcvbn-c");
+        //PublicIncludePaths.AddRange(new string[] {
+        //    "SecHack/Source/SecHack/zxcvbn"
+        //});
+        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "zxcvbn-c-master"));
 
-        // Include path for headers
-        PublicIncludePaths.Add(Path.Combine(ZxcvbnPath, "Include"));
 
-        // Library path
-        string LibraryPath = Path.Combine(ZxcvbnPath, "Lib");
-
-        // Link with the static library
-        PublicAdditionalLibraries.Add(Path.Combine(LibraryPath, "libzxcvbn.a"));
-
-        // If using shared library instead
-        // PublicAdditionalLibraries.Add(Path.Combine(LibraryPath, "libzxcvbn.so"));
-
-        // Make sure to add any runtime dependencies
-        RuntimeDependencies.Add(Path.Combine(LibraryPath, "libzxcvbn.so"));
 
         // Uncomment if you are using Slate UI
         // PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });

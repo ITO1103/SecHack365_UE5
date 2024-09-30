@@ -4,7 +4,7 @@
 #include "RegexPW.h"
 #include <vector>
 #include <regex>
-#include "zxcvbn.h"
+//#include "zxcvbn/zxcvbn.h"
 
 // Sets default values
 ARegexPW::ARegexPW()
@@ -121,26 +121,4 @@ void ARegexPW::noRegexFlags(const FString& InputString)
 	{
 		noLowerAlphabetFlag = true;
 	}
-}
-
-
-void ARegexPW::ChechPaswordStrength(const FString& InputString)
-{
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ZXCVBN"));
-
-	ZxcvbnInit(nullptr);
-	//ZxcvbnMatch
-    ZxcMatch_t *match = ZxcvbnMatch(TCHAR_TO_UTF8(*InputString), nullptr);
-	ZxcMatch_t *current = match;
-	while (current != nullptr)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Begin: %d"), current->Begin));
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Length: %d"), current->Length));
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Entropy: %f"), current->Entrpy));
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("MltEnpy: %f"), current->MltEnpy));
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Type: %d"), current->Type));
-		current = current->Next;
-	}
-	ZxcvbnUnInit();
-
 }
