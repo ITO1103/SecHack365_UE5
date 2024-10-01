@@ -13,11 +13,15 @@ public class SecHack : ModuleRules
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
-        //PublicIncludePaths.AddRange(new string[] {
-        //    "SecHack/Source/SecHack/zxcvbn"
-        //});
-        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "zxcvbn-c-master"));
+        // 外部ソースファイルの追加
+        PrivateIncludePaths.Add("SecHack/zxcvbn"); // ヘッダーファイルの場所
 
+        // 必要なソースファイルをビルドに追加
+        PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "zxcvbn.c"));
+        PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "test.cpp"));
+
+        // コンパイルフラグ
+        PublicDefinitions.Add("USE_DICT_FILE");  // このフラグを有効化
 
 
         // Uncomment if you are using Slate UI
