@@ -32,6 +32,11 @@
 #ifdef _WIN32
 //#include "stdafx.h"
 #include <windows.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
+#include <zxcvbn.h>
 #endif
 const char *UsrDict[] =
 {

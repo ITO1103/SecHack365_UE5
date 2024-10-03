@@ -48,6 +48,18 @@
 #ifdef _WIN32
 //#include "stdafx.h"
 #include <windows.h>
+#include <zxcvbn.h>
+#include <ctype.h>
+#include <string.h>
+#include <stdint.h>
+#include <math.h>
+#include <float.h>
+#include <cstdio>
+#include <stdio.h>
+#include <fstream>
+//include all headers
+#include "stdc++.h"
+
 #endif
 
 /* Minimum number of characters in a incrementing/decrementing sequence match */
