@@ -4,6 +4,7 @@
 #include "RegexPW.h"
 #include <vector>
 #include <regex>
+#include "zxcvbn.h"
 //#include "zxcvbn/zxcvbn.h"
 
 // Sets default values
@@ -121,4 +122,39 @@ void ARegexPW::noRegexFlags(const FString& InputString)
 	{
 		noLowerAlphabetFlag = true;
 	}
+}
+
+
+void ARegexPW::CheckPasswordStrength(const FString& InputString)
+{
+	// Initialize zxcvbn (you can omit the argument if the dictionary is included in the executable)
+	const char* dictPath = "zxcvbn/dict/zxcvbn.dict";
+	ZxcvbnInit(dictPath);
+
+	// Convert the password from FString to std::string
+	std::string password(TCHAR_TO_UTF8(*InputString));
+
+	// Call ZxcvbnMatch to check the password strength
+	Match_t* result = ZxcvbnMatch(password.c_str(), nullptr);
+
+	// Check the entropy and other info (adjust the output as needed)
+	if (result != nullptr)
+	{
+		float entropy = result->entropy;
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Password entropy: %f"), entropy));
+
+		// You can also check for suggestions or warnings here
+		if (result->feedback.warning != nullptr)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Warning: %s"), UTF8_TO_TCHAR(result->feedback.warning)));
+		}
+
+		// Free the result after use
+		ZxcvbnFreeInfo(result);
+	}
+
+	// Uninitialize zxcvbn after usage
+	ZxcvbnUninit();
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ZXCVBN is running!"));
 }

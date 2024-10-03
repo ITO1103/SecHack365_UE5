@@ -14,14 +14,22 @@ public class SecHack : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
         // 外部ソースファイルの追加
-        PrivateIncludePaths.Add("SecHack/zxcvbn"); // ヘッダーファイルの場所
+        PrivateIncludePaths.Add("SecHack/zxcvbn/include"); // ヘッダーファイルの場所
 
         // 必要なソースファイルをビルドに追加
-        PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "zxcvbn.c"));
-        PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "test.cpp"));
+        //PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "zxcvbn.c"));
+        //PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "test.cpp"));
+        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "zxcvbn", "include"));
+
+        if (Target.Platform == UnrealTargetPlatform.Win64)
+        {
+            PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "zxcvbn", "lib", "libzxcvbn.a"));
+        }
 
         // コンパイルフラグ
-        PublicDefinitions.Add("USE_DICT_FILE");  // このフラグを有効化
+        //PublicDefinitions.Add("USE_DICT_FILE");  // このフラグを有効化
+
+
 
 
         // Uncomment if you are using Slate UI
