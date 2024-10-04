@@ -77,5 +77,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
 	bool noLowerAlphabetFlag;
 
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
+	//int result;
+
 
 };

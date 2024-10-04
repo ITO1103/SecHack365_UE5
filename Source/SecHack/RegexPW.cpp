@@ -154,7 +154,7 @@ void ARegexPW::CheckPasswordStrength(const FString& InputString)
 	}
 
 	// Uninitialize zxcvbn after usage
-	ZxcvbnUninit();
+	ZxcvbnUnInit();
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ZXCVBN is running!"));
 }
