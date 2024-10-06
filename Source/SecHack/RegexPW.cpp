@@ -127,34 +127,29 @@ void ARegexPW::noRegexFlags(const FString& InputString)
 
 void ARegexPW::CheckPasswordStrength(const FString& InputString)
 {
-	// Initialize zxcvbn (you can omit the argument if the dictionary is included in the executable)
-	const char* dictPath = "zxcvbn/dict/zxcvbn.dict";
-	ZxcvbnInit(dictPath);
+	// zxcvbnを初期化
+	ZxcvbnInit(nullptr);
 
-	// Convert the password from FString to std::string
-	std::string password(TCHAR_TO_UTF8(*InputString));
+	// FString -> std::string への変換
+	std::string passwordStr(TCHAR_TO_UTF8(*InputString));
 
-	// Call ZxcvbnMatch to check the password strength
-	Match_t* result = ZxcvbnMatch(password.c_str(), nullptr);
+	// パスワードの強度判定を実行
+	ZxcMatch_t* resultInfo = nullptr;
+	double entropy = ZxcvbnMatch(passwordStr.c_str(), nullptr, &resultInfo);
 
-	// Check the entropy and other info (adjust the output as needed)
-	if (result != nullptr)
+	if (resultInfo != nullptr)
 	{
-		float entropy = result->entropy;
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Password entropy: %f"), entropy));
+		// 結果のエントロピー値を出力
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Password Entropy: %f"), entropy));
 
-		// You can also check for suggestions or warnings here
-		if (result->feedback.warning != nullptr)
-		{
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, FString::Printf(TEXT("Warning: %s"), UTF8_TO_TCHAR(result->feedback.warning)));
-		}
-
-		// Free the result after use
-		ZxcvbnFreeInfo(result);
+		// 結果のメモリを解放
+		ZxcvbnFreeInfo(resultInfo);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ZxcvbnMatch failed."));
 	}
 
-	// Uninitialize zxcvbn after usage
+	// zxcvbnの後処理
 	ZxcvbnUnInit();
-
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ZXCVBN is running!"));
 }

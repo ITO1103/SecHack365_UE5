@@ -15,16 +15,15 @@ public class SecHack : ModuleRules
 
         // 外部ソースファイルの追加
         PrivateIncludePaths.Add("SecHack/zxcvbn/include"); // ヘッダーファイルの場所
+        //PublicIncludePaths.Add(ModuleDirectory + "zxcvbn/include");
 
         // 必要なソースファイルをビルドに追加
-        //PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "zxcvbn.c"));
-        //PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "test.cpp"));
         PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "zxcvbn", "include"));
+        PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "zxcvbn", "lib"));
 
-        if (Target.Platform == UnrealTargetPlatform.Win64)
-        {
-            PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "zxcvbn", "lib", "libzxcvbn.a"));
-        }
+        PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "zxcvbn/lib/libzxcvbn.a"));
+
+        //PublicIncludePaths.Add("D:\\UnrealEngine\\Project\\SecHack\\Source\\SecHack\\zxcvbn\\include");
 
         // コンパイルフラグ
         //PublicDefinitions.Add("USE_DICT_FILE");  // このフラグを有効化
