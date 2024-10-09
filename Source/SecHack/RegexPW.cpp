@@ -4,7 +4,7 @@
 #include "RegexPW.h"
 #include <vector>
 #include <regex>
-#include "zxcvbn.h"
+//#include "zxcvbn.h"
 //#include "zxcvbn/zxcvbn.h"
 
 // Sets default values
@@ -125,31 +125,31 @@ void ARegexPW::noRegexFlags(const FString& InputString)
 }
 
 
-void ARegexPW::CheckPasswordStrength(const FString& InputString)
-{
-	// zxcvbnを初期化
-	ZxcvbnInit(nullptr);
-
-	// FString -> std::string への変換
-	std::string passwordStr(TCHAR_TO_UTF8(*InputString));
-
-	// パスワードの強度判定を実行
-	ZxcMatch_t* resultInfo = nullptr;
-	double entropy = ZxcvbnMatch(passwordStr.c_str(), nullptr, &resultInfo);
-
-	if (resultInfo != nullptr)
-	{
-		// 結果のエントロピー値を出力
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Password Entropy: %f"), entropy));
-
-		// 結果のメモリを解放
-		ZxcvbnFreeInfo(resultInfo);
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ZxcvbnMatch failed."));
-	}
-
-	// zxcvbnの後処理
-	ZxcvbnUnInit();
-}
+//void ARegexPW::CheckPasswordStrength(const FString& InputString)
+//{
+//	// zxcvbnを初期化
+//	ZxcvbnInit(nullptr);
+//
+//	// FString -> std::string への変換
+//	std::string passwordStr(TCHAR_TO_UTF8(*InputString));
+//
+//	// パスワードの強度判定を実行
+//	ZxcMatch_t* resultInfo = nullptr;
+//	double entropy = ZxcvbnMatch(passwordStr.c_str(), nullptr, &resultInfo);
+//
+//	if (resultInfo != nullptr)
+//	{
+//		// 結果のエントロピー値を出力
+//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Password Entropy: %f"), entropy));
+//
+//		// 結果のメモリを解放
+//		ZxcvbnFreeInfo(resultInfo);
+//	}
+//	else
+//	{
+//		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ZxcvbnMatch failed."));
+//	}
+//
+//	// zxcvbnの後処理
+//	ZxcvbnUnInit();
+//}
