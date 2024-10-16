@@ -24,7 +24,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// パスワード強度をチェックする関数
-	int CheckPasswordStrength(const char* password);
+    UFUNCTION(BlueprintCallable, Category = "MyCategory")
+	int CheckPasswordStrength(const FString& str);
 
 };
 
@@ -162,3 +163,5 @@ extern "C" {
 #endif
 
 #endif
+
+

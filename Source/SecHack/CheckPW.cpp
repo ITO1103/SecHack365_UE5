@@ -18,16 +18,17 @@ void ACheckPW::BeginPlay()
 	Super::BeginPlay();
 
     // 例として、パスワード "testpassword" の強度をチェック
-    FString password = "123456789";
+    // for test
+    /*
+    FString password = "password";
     double score = CheckPasswordStrength(TCHAR_TO_ANSI(*password));
-    double e;
-	ZxcvbnMatch(TCHAR_TO_ANSI(*password), &e, nullptr);
-
+    const char* matches = nullptr;
+    ZxcvbnMatch(TCHAR_TO_ANSI(*password), &matches, nullptr);
+	
 	//デバッグログを出力
-
-
     UE_LOG(LogTemp, Warning, TEXT("Password Strength Score: %f"), score);
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Password Strength Score: %f"), score));	
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Password Strength Score: %f"), score));
+    */	
 }
 
 // Called every frame
@@ -37,18 +38,17 @@ void ACheckPW::Tick(float DeltaTime)
 
 }
 
-int ACheckPW::CheckPasswordStrength(const char* password)
+int ACheckPW::CheckPasswordStrength(const FString& str)
 {
     ZxcvbnInit();  // zxcvbn初期化
 
     ZxcMatch_t* match = nullptr; // 初期化
-    double entropy = ZxcvbnMatch(password, nullptr, &match);  // パスワードをチェック
+    double entropy = ZxcvbnMatch(TCHAR_TO_ANSI(*str), nullptr, &match);  // パスワードをチェック
     double score = static_cast<int>(entropy);  // エントロピー（強度スコア）
 
-	//デバッグログを出力
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("CheckPasswordStrength Called"));
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Password: testpassword"));
-
+    //デバッグログを出力
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("CheckPasswordStrength Called"));
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, *str);
 
     ZxcvbnFreeInfo(match);  // メモリ解放
     ZxcvbnUnInit();  // zxcvbnの終了処理
@@ -57,7 +57,7 @@ int ACheckPW::CheckPasswordStrength(const char* password)
 }
 
 
-
+// 以下test.cpp
 
 
 ////////////////////////////////////////////////////////////////////////////////////////
