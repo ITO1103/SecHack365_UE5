@@ -38,22 +38,28 @@ void ACheckPW::Tick(float DeltaTime)
 
 }
 
-int ACheckPW::CheckPasswordStrength(const FString& str)
+double ACheckPW::CheckPasswordStrength(const FString& str)
 {
     ZxcvbnInit();  // zxcvbn初期化
 
     ZxcMatch_t* match = nullptr; // 初期化
-    double entropy = ZxcvbnMatch(TCHAR_TO_ANSI(*str), nullptr, &match);  // パスワードをチェック
-    double score = static_cast<int>(entropy);  // エントロピー（強度スコア）
+    PasswordEntropy = ZxcvbnMatch(TCHAR_TO_ANSI(*str), nullptr, &match);  // パスワードをチェック
+    //double score = static_cast<int>(entropy);  // エントロピー（強度スコア）
 
     //デバッグログを出力
     GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("CheckPasswordStrength Called"));
-    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, *str);
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("CheckPasswordStrength Called"));
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("CheckPasswordStrength Called"));
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("CheckPasswordStrength Called"));
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("CheckPasswordStrength Called"));
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("CheckPasswordStrength Called"));
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Entropy: %f"), PasswordEntropy));
 
     ZxcvbnFreeInfo(match);  // メモリ解放
     ZxcvbnUnInit();  // zxcvbnの終了処理
 
-    return score;  // エントロピーをスコアとして返す
+    //return entropy;  // エントロピーをスコアとして返す
+	return PasswordEntropy;
 }
 
 

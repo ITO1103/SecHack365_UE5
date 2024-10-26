@@ -25,7 +25,10 @@ public:
 
 	// パスワード強度をチェックする関数
     UFUNCTION(BlueprintCallable, Category = "MyCategory")
-	int CheckPasswordStrength(const FString& str);
+	double CheckPasswordStrength(const FString& str);
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
+	double PasswordEntropy;
 
 };
 
