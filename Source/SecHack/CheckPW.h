@@ -27,6 +27,9 @@ public:
     UFUNCTION(BlueprintCallable, Category = "MyCategory")
 	double CheckPasswordStrength(const FString& str);
 
+    UFUNCTION(BlueprintCallable, Category = "MyCategory")
+    int RunPasswordChecks(const TArray<FString>& Args);
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
 	double PasswordEntropy;
 

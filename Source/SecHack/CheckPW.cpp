@@ -48,11 +48,6 @@ double ACheckPW::CheckPasswordStrength(const FString& str)
 
     //デバッグログを出力
     GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("CheckPasswordStrength Called"));
-    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("CheckPasswordStrength Called"));
-    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("CheckPasswordStrength Called"));
-    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("CheckPasswordStrength Called"));
-    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("CheckPasswordStrength Called"));
-    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("CheckPasswordStrength Called"));
     GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Entropy: %f"), PasswordEntropy));
 
     ZxcvbnFreeInfo(match);  // メモリ解放
@@ -1647,6 +1642,7 @@ typedef struct
  */
 double ZxcvbnMatch(const char* Pwd, const char* UserDict[], ZxcMatch_t** Info)
 {
+    GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, TEXT("ZxcvbnMatch is Called"));
     int i, jaa;
     ZxcMatch_t* Zp;
     Node_t* Np;
@@ -1878,6 +1874,7 @@ const char* UsrDict[] =
 
 static void CalcPass(const char* Pwd, int Quiet)
 {
+    GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Green, TEXT("CalsPass is Called"));
     double e;
     if (!Quiet)
     {
@@ -1895,43 +1892,76 @@ static void CalcPass(const char* Pwd, int Quiet)
 
         Len = strlen(Pwd);
         m = e - m;
-        printf("Pass %s \tLength %d\tEntropy bits=%.3f log10=%.3f\tMulti-word extra bits=%.1f\n", Pwd, Len, e, e * 0.301029996, m);
+        //printf("Pass %s \tLength %d\tEntropy bits=%.3f log10=%.3f\tMulti-word extra bits=%.1f\n", Pwd, Len, e, e * 0.301029996, m);
+        FString DebugMessage = FString::Printf(TEXT("Pass: %s\tLength: %d\tEntropy bits=%.3f log10=%.3f\tMulti-word extra bits=%.1f"), UTF8_TO_TCHAR(Pwd), Len, e, e * 0.301029996, m);
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, DebugMessage);
+
         p = Info;
         ChkLen = 0;
         while (p)
         {
             int n;
+            FString TypeMessage;
             switch ((int)p->Type)
             {
-            case BRUTE_MATCH:                     printf("  Type: Bruteforce     ");   break;
-            case DICTIONARY_MATCH:                printf("  Type: Dictionary     ");   break;
-            case DICT_LEET_MATCH:                 printf("  Type: Dict+Leet      ");   break;
-            case USER_MATCH:                      printf("  Type: User Words     ");   break;
-            case USER_LEET_MATCH:                 printf("  Type: User+Leet      ");   break;
-            case REPEATS_MATCH:                   printf("  Type: Repeated       ");   break;
-            case SEQUENCE_MATCH:                  printf("  Type: Sequence       ");   break;
-            case SPATIAL_MATCH:                   printf("  Type: Spatial        ");   break;
-            case DATE_MATCH:                      printf("  Type: Date           ");   break;
-            case YEAR_MATCH:                      printf("  Type: Year           ");   break;
-            case LONG_PWD_MATCH:                  printf("  Type: Extra-long     ");   break;
-            case BRUTE_MATCH + MULTIPLE_MATCH:      printf("  Type: Bruteforce(Rep)");   break;
-            case DICTIONARY_MATCH + MULTIPLE_MATCH: printf("  Type: Dictionary(Rep)");   break;
-            case DICT_LEET_MATCH + MULTIPLE_MATCH:  printf("  Type: Dict+Leet(Rep) ");   break;
-            case USER_MATCH + MULTIPLE_MATCH:       printf("  Type: User Words(Rep)");   break;
-            case USER_LEET_MATCH + MULTIPLE_MATCH:  printf("  Type: User+Leet(Rep) ");   break;
-            case REPEATS_MATCH + MULTIPLE_MATCH:    printf("  Type: Repeated(Rep)  ");   break;
-            case SEQUENCE_MATCH + MULTIPLE_MATCH:   printf("  Type: Sequence(Rep)  ");   break;
-            case SPATIAL_MATCH + MULTIPLE_MATCH:    printf("  Type: Spatial(Rep)   ");   break;
-            case DATE_MATCH + MULTIPLE_MATCH:       printf("  Type: Date(Rep)      ");   break;
-            case YEAR_MATCH + MULTIPLE_MATCH:       printf("  Type: Year(Rep)      ");   break;
-            case LONG_PWD_MATCH + MULTIPLE_MATCH:   printf("  Type: Extra-long(Rep)");   break;
+            case BRUTE_MATCH: TypeMessage = TEXT("  Type: Bruteforce"); break;
+            case DICTIONARY_MATCH: TypeMessage = TEXT("  Type: Dictionary"); break;
+            case DICT_LEET_MATCH: TypeMessage = TEXT("  Type: Dict+Leet"); break;
+            case USER_MATCH: TypeMessage = TEXT("  Type: User Words"); break;
+            case USER_LEET_MATCH: TypeMessage = TEXT("  Type: User+Leet"); break;
+            case REPEATS_MATCH: TypeMessage = TEXT("  Type: Repeated"); break;
+            case SEQUENCE_MATCH: TypeMessage = TEXT("  Type: Sequence"); break;
+            case SPATIAL_MATCH: TypeMessage = TEXT("  Type: Spatial"); break;
+            case DATE_MATCH: TypeMessage = TEXT("  Type: Date"); break;
+            case YEAR_MATCH: TypeMessage = TEXT("  Type: Year"); break;
+            case LONG_PWD_MATCH: TypeMessage = TEXT("  Type: Extra-long"); break;
+            case BRUTE_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Bruteforce(Rep)"); break;
+            case DICTIONARY_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Dictionary(Rep)"); break;
+            case DICT_LEET_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Dict+Leet(Rep)"); break;
+            case USER_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: User Words(Rep)"); break;
+            case USER_LEET_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: User+Leet(Rep)"); break;
+            case REPEATS_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Repeated(Rep)"); break;
+            case SEQUENCE_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Sequence(Rep)"); break;
+            case SPATIAL_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Spatial(Rep)"); break;
+            case DATE_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Date(Rep)"); break;
+            case YEAR_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Year(Rep)"); break;
+            case LONG_PWD_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Extra-long(Rep)"); break;
+            
+            default: TypeMessage = FString::Printf(TEXT("  Type: Unknown%d"), p->Type); break;
 
-            default:                printf("  Type: Unknown%d ", p->Type);   break;
+            //case BRUTE_MATCH:                     printf("  Type: Bruteforce     ");   break;
+            //case DICTIONARY_MATCH:                printf("  Type: Dictionary     ");   break;
+            //case DICT_LEET_MATCH:                 printf("  Type: Dict+Leet      ");   break;
+            //case USER_MATCH:                      printf("  Type: User Words     ");   break;
+            //case USER_LEET_MATCH:                 printf("  Type: User+Leet      ");   break;
+            //case REPEATS_MATCH:                   printf("  Type: Repeated       ");   break;
+            //case SEQUENCE_MATCH:                  printf("  Type: Sequence       ");   break;
+            //case SPATIAL_MATCH:                   printf("  Type: Spatial        ");   break;
+            //case DATE_MATCH:                      printf("  Type: Date           ");   break;
+            //case YEAR_MATCH:                      printf("  Type: Year           ");   break;
+            //case LONG_PWD_MATCH:                  printf("  Type: Extra-long     ");   break;
+            //case BRUTE_MATCH + MULTIPLE_MATCH:      printf("  Type: Bruteforce(Rep)");   break;
+            //case DICTIONARY_MATCH + MULTIPLE_MATCH: printf("  Type: Dictionary(Rep)");   break;
+            //case DICT_LEET_MATCH + MULTIPLE_MATCH:  printf("  Type: Dict+Leet(Rep) ");   break;
+            //case USER_MATCH + MULTIPLE_MATCH:       printf("  Type: User Words(Rep)");   break;
+            //case USER_LEET_MATCH + MULTIPLE_MATCH:  printf("  Type: User+Leet(Rep) ");   break;
+            //case REPEATS_MATCH + MULTIPLE_MATCH:    printf("  Type: Repeated(Rep)  ");   break;
+            //case SEQUENCE_MATCH + MULTIPLE_MATCH:   printf("  Type: Sequence(Rep)  ");   break;
+            //case SPATIAL_MATCH + MULTIPLE_MATCH:    printf("  Type: Spatial(Rep)   ");   break;
+            //case DATE_MATCH + MULTIPLE_MATCH:       printf("  Type: Date(Rep)      ");   break;
+            //case YEAR_MATCH + MULTIPLE_MATCH:       printf("  Type: Year(Rep)      ");   break;
+            //case LONG_PWD_MATCH + MULTIPLE_MATCH:   printf("  Type: Extra-long(Rep)");   break;
+
+            //default:                printf("  Type: Unknown%d ", p->Type);   break;
             }
             ChkLen += p->Length;
-            printf("  Length %d  Entropy %6.3f (%.2f) ", p->Length, p->Entrpy, p->Entrpy * 0.301029996);
+            //printf("  Length %d  Entropy %6.3f (%.2f) ", p->Length, p->Entrpy, p->Entrpy * 0.301029996);
+            DebugMessage = FString::Printf(TEXT("%s  Length: %d  Entropy: %.3f (%.2f)"), *TypeMessage, p->Length, p->Entrpy, p->Entrpy * 0.301029996);
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, DebugMessage);
+
             for (n = 0; n < p->Length; ++n, ++Pwd)
-                printf("%c", *Pwd);
+                //printf("%c", *Pwd);
+                DebugMessage += TCHAR_TO_UTF8(&Pwd[n]);
             printf("\n");
             p = p->Next;
         }
@@ -1939,20 +1969,28 @@ static void CalcPass(const char* Pwd, int Quiet)
         t2.tv_sec -= t1.tv_sec;
         t2.tv_usec -= t1.tv_usec;
         t2.tv_usec += t2.tv_sec * 1000000;
-        printf("    Calculation Time %.2fms\n", t2.tv_usec / 1000.0);
+        //printf("    Calculation Time %.2fms\n", t2.tv_usec / 1000.0);
+        DebugMessage = FString::Printf(TEXT("    Calculation Time: %.2f ms"), t2.tv_usec / 1000.0);
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, DebugMessage);
+
         if (ChkLen != Len)
-            printf("*** Password length (%d) != sum of length of parts (%d) ***\n", Len, ChkLen);
+            //printf("*** Password length (%d) != sum of length of parts (%d) ***\n", Len, ChkLen);
+            DebugMessage = FString::Printf(TEXT("*** Password length (%d) != sum of length of parts (%d) ***"), Len, ChkLen);
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, DebugMessage);
     }
     else
     {
         /* Only get the final entropy figure */
         e = ZxcvbnMatch(Pwd, UsrDict, 0);
-        printf("Pass %s \tEntropy %.3f\n", Pwd, e);
+        //printf("Pass %s \tEntropy %.3f\n", Pwd, e);
+        FString DebugMessage = FString::Printf(TEXT("Pass: %s\tEntropy: %.3f"), UTF8_TO_TCHAR(Pwd), e);
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, DebugMessage);
     }
 }
 
 int DoChecks(char* file)
 {
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("DoCkecks is Called"));
     char Line[5000];
     int y = 0;
     int w = 0;
@@ -2130,6 +2168,72 @@ int main(int argc, char** argv)
             CalcPass(argv[i], Quiet);
         }
     }
+    ZxcvbnUnInit();
+    return 0;
+}
+
+
+// Copy of main function
+int ACheckPW::RunPasswordChecks(const TArray<FString>& Args)
+{
+    GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Green, TEXT("RunPasswordChecks is Called"));
+    int i, Quiet, Checks, White;
+    Quiet = 0;
+    Checks = 0;
+    White = 0;
+
+    const char* password = "P@ssword!";
+
+    CalcPass(password, Quiet);
+
+    if (!ZxcvbnInit("zxcvbn.dict"))
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to open dictionary file"));
+        return 1;
+    }
+
+    // Args[0] is the executable name in original argc/argv, so start at Args[1]
+    if (Args.Num() > 1 && Args[1].StartsWith(TEXT("-")))
+    {
+        if (Args[1] == TEXT("-qs") || Args[1] == TEXT("-sq"))
+            Quiet = White = 1;
+        else if (Args[1] == TEXT("-t"))
+            Checks = 1;
+        else if (Args[1] == TEXT("-q"))
+            Quiet = 1;
+        else if (Args[1] == TEXT("-s"))
+            White = 1;
+
+        if (Checks + Quiet + White == 0)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Usage: %s [ -q | -qs ] [ pwd1 pwd2 ... ]"), *Args[0]);
+            return 1;
+        }
+    }
+
+    if (Checks)//現状ここに入ってない
+    {
+        for (i = 2; i < Args.Num(); ++i)
+        {
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("DoCheck is Called"));
+            Checks = DoChecks(TCHAR_TO_ANSI(*Args[i]));
+            if (Checks)
+
+                return 1;
+        }
+        return 0;
+    }
+    else {//こっちに入ってる
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("if else is Called"));
+    }
+
+    // Password checking
+    for (i = 1 + Quiet + White; i < Args.Num(); ++i)
+    {
+        CalcPass(TCHAR_TO_ANSI(*Args[i]), Quiet);
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CalcPass is Called"));
+    }
+
     ZxcvbnUnInit();
     return 0;
 }
