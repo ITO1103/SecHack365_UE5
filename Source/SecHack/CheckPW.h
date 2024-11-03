@@ -33,6 +33,15 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
 	double PasswordEntropy;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
+    FString zxcvbnResult1;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
+    FString zxcvbnResult2;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
+    FString zxcvbnResult3;
+
 };
 
 

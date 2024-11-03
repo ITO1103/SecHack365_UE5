@@ -1895,6 +1895,7 @@ static void CalcPass(const char* Pwd, int Quiet)
         //printf("Pass %s \tLength %d\tEntropy bits=%.3f log10=%.3f\tMulti-word extra bits=%.1f\n", Pwd, Len, e, e * 0.301029996, m);
         FString DebugMessage = FString::Printf(TEXT("Pass: %s\tLength: %d\tEntropy bits=%.3f log10=%.3f\tMulti-word extra bits=%.1f"), UTF8_TO_TCHAR(Pwd), Len, e, e * 0.301029996, m);
         GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, DebugMessage);
+        zxcvbnResult1 = DebugMessage;
 
         p = Info;
         ChkLen = 0;
@@ -2182,7 +2183,9 @@ int ACheckPW::RunPasswordChecks(const TArray<FString>& Args)
     Checks = 0;
     White = 0;
 
-    const char* password = "P@ssword!";
+	//渡された文字列をpasswordに代入
+	const char* password = TCHAR_TO_ANSI(*Args[1]);
+	GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Green, FString::Printf(TEXT("Password: %s"), UTF8_TO_TCHAR(password)));
 
     CalcPass(password, Quiet);
 
