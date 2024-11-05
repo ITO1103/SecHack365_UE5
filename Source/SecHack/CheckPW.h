@@ -30,6 +30,9 @@ public:
     UFUNCTION(BlueprintCallable, Category = "MyCategory")
     int RunPasswordChecks(const TArray<FString>& Args);
 
+    /*UFUNCTION(BlueprintCallable, Category = "Password")
+    static void CalcPassWrapper(const FString& Pwd, int Quiet);*/
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
 	double PasswordEntropy;
 
@@ -41,6 +44,9 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
     FString zxcvbnResult3;
+
+private:
+    void CalcPass(const char* Pwd, int Quiet);
 
 };
 

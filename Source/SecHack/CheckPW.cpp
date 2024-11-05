@@ -93,6 +93,7 @@ double ACheckPW::CheckPasswordStrength(const FString& str)
 #include <float.h>
 #include <stdlib.h>
 #include "sys/time.h"
+#include <string>
 
  /* printf */
 #ifdef __cplusplus
@@ -1872,7 +1873,13 @@ const char* UsrDict[] =
     0
 };
 
-static void CalcPass(const char* Pwd, int Quiet)
+//void ACheckPW::CalcPassWrapper(const FString& Pwd, int Quiet)
+//{
+//    std::string ConvertedPwd(TCHAR_TO_UTF8(*Pwd));
+//    ACheckPW::CalcPass(ConvertedPwd.c_str(), Quiet);
+//}
+
+void ACheckPW::CalcPass(const char* Pwd, int Quiet)
 {
     GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Green, TEXT("CalsPass is Called"));
     double e;
@@ -1895,7 +1902,8 @@ static void CalcPass(const char* Pwd, int Quiet)
         //printf("Pass %s \tLength %d\tEntropy bits=%.3f log10=%.3f\tMulti-word extra bits=%.1f\n", Pwd, Len, e, e * 0.301029996, m);
         FString DebugMessage = FString::Printf(TEXT("Pass: %s\tLength: %d\tEntropy bits=%.3f log10=%.3f\tMulti-word extra bits=%.1f"), UTF8_TO_TCHAR(Pwd), Len, e, e * 0.301029996, m);
         GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, DebugMessage);
-        zxcvbnResult1 = DebugMessage;
+		this->zxcvbnResult1 = DebugMessage;
+		GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Green, zxcvbnResult1);
 
         p = Info;
         ChkLen = 0;
@@ -2086,92 +2094,92 @@ int DoChecks(char* file)
 
 
 
-int main(int argc, char** argv)
-{
-    int i, Quiet, Checks, White;
-    Quiet = 0;
-    Checks = 0;
-    White = 0;
-
-    if (!ZxcvbnInit("zxcvbn.dict"))
-    {
-        printf("Failed to open dictionary file\n");
-        return 1;
-    }
-    if ((argc > 1) && (argv[1][0] == '-'))
-    {
-        if (!strcmp(argv[1], "-qs") || !strcmp(argv[1], "-sq"))
-            Quiet = White = 1;
-        if (!strcmp(argv[1], "-t"))
-            Checks = 1;
-        if (!strcmp(argv[1], "-q"))
-            Quiet = 1;
-        if (!strcmp(argv[1], "-s"))
-            White = 1;
-        if ((Checks + Quiet + White) == 0)
-        {
-            char* s = strrchr(argv[0], '/');
-            if (s == NULL)
-                s = argv[0];
-            else
-                ++s;
-            printf("Usage: %s [ -q | -qs ] [ pwd1 pwd2 ... ]\n"
-                "          Output entropy of given passwords. If no passwords on command line read\n"
-                "           them from stdin.\n"
-                "          -q option stops password analysis details from being output.\n"
-                "          -s Ignore anything from space on a line when reading from stdin.\n"
-                "       %s -t file\n"
-                "          Read the file and check for correct results.\n", s, s);
-
-            return 1;
-        }
-    }
-    if (Checks)
-    {
-        for (i = 2; i < argc; ++i)
-        {
-            Checks = DoChecks(argv[i]);
-            if (Checks)
-                return 1;
-        }
-        return 0;
-    }
-    i = 1 + Quiet + White;
-    if (i >= argc)
-    {
-        /* No test passwords on command line, so get them from stdin */
-        char Line[5000];
-        while (fgets(Line, sizeof Line, stdin))
-        {
-            /* Drop the trailing newline character */
-            for (i = 0; i < (int)(sizeof Line - 1); ++i)
-            {
-                if (Line[i] < ' ')
-                {
-                    Line[i] = 0;
-                    break;
-                }
-                if (White && (Line[i] == ' '))
-                {
-                    Line[i] = 0;
-                    break;
-                }
-            }
-            if (Line[0])
-                CalcPass(Line, Quiet);
-        }
-    }
-    else
-    {
-        /* Do the test passwords on the command line */
-        for (; i < argc; ++i)
-        {
-            CalcPass(argv[i], Quiet);
-        }
-    }
-    ZxcvbnUnInit();
-    return 0;
-}
+//int main(int argc, char** argv)
+//{
+//    int i, Quiet, Checks, White;
+//    Quiet = 0;
+//    Checks = 0;
+//    White = 0;
+//
+//    if (!ZxcvbnInit("zxcvbn.dict"))
+//    {
+//        printf("Failed to open dictionary file\n");
+//        return 1;
+//    }
+//    if ((argc > 1) && (argv[1][0] == '-'))
+//    {
+//        if (!strcmp(argv[1], "-qs") || !strcmp(argv[1], "-sq"))
+//            Quiet = White = 1;
+//        if (!strcmp(argv[1], "-t"))
+//            Checks = 1;
+//        if (!strcmp(argv[1], "-q"))
+//            Quiet = 1;
+//        if (!strcmp(argv[1], "-s"))
+//            White = 1;
+//        if ((Checks + Quiet + White) == 0)
+//        {
+//            char* s = strrchr(argv[0], '/');
+//            if (s == NULL)
+//                s = argv[0];
+//            else
+//                ++s;
+//            printf("Usage: %s [ -q | -qs ] [ pwd1 pwd2 ... ]\n"
+//                "          Output entropy of given passwords. If no passwords on command line read\n"
+//                "           them from stdin.\n"
+//                "          -q option stops password analysis details from being output.\n"
+//                "          -s Ignore anything from space on a line when reading from stdin.\n"
+//                "       %s -t file\n"
+//                "          Read the file and check for correct results.\n", s, s);
+//
+//            return 1;
+//        }
+//    }
+//    if (Checks)
+//    {
+//        for (i = 2; i < argc; ++i)
+//        {
+//            Checks = DoChecks(argv[i]);
+//            if (Checks)
+//                return 1;
+//        }
+//        return 0;
+//    }
+//    i = 1 + Quiet + White;
+//    if (i >= argc)
+//    {
+//        /* No test passwords on command line, so get them from stdin */
+//        char Line[5000];
+//        while (fgets(Line, sizeof Line, stdin))
+//        {
+//            /* Drop the trailing newline character */
+//            for (i = 0; i < (int)(sizeof Line - 1); ++i)
+//            {
+//                if (Line[i] < ' ')
+//                {
+//                    Line[i] = 0;
+//                    break;
+//                }
+//                if (White && (Line[i] == ' '))
+//                {
+//                    Line[i] = 0;
+//                    break;
+//                }
+//            }
+//            if (Line[0])
+//                CalcPass(Line, Quiet);
+//        }
+//    }
+//    else
+//    {
+//        /* Do the test passwords on the command line */
+//        for (; i < argc; ++i)
+//        {
+//            CalcPass(argv[i], Quiet);
+//        }
+//    }
+//    ZxcvbnUnInit();
+//    return 0;
+//}
 
 
 // Copy of main function
