@@ -1643,7 +1643,7 @@ typedef struct
  */
 double ZxcvbnMatch(const char* Pwd, const char* UserDict[], ZxcMatch_t** Info)
 {
-    GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Red, TEXT("ZxcvbnMatch is Called"));
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ZxcvbnMatch is Called"));
     int i, jaa;
     ZxcMatch_t* Zp;
     Node_t* Np;
@@ -1876,13 +1876,15 @@ const char* UsrDict[] =
 //void ACheckPW::CalcPassWrapper(const FString& Pwd, int Quiet)
 //{
 //    std::string ConvertedPwd(TCHAR_TO_UTF8(*Pwd));
-//    ACheckPW::CalcPass(ConvertedPwd.c_str(), Quiet);
+//    CalcPass(ConvertedPwd.c_str(), Quiet);
 //}
 
 void ACheckPW::CalcPass(const char* Pwd, int Quiet)
 {
     GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Green, TEXT("CalsPass is Called"));
     double e;
+    FString AllDebugMessages;
+    FString DebugMessage2;
     if (!Quiet)
     {
         /* Output the details of how the entropy figure was calculated */
@@ -1904,6 +1906,9 @@ void ACheckPW::CalcPass(const char* Pwd, int Quiet)
         GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, DebugMessage);
 		this->zxcvbnResult1 = DebugMessage;
 		GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Green, zxcvbnResult1);
+
+        // Initialize AllDebugMessages with the first debug message
+        //AllDebugMessages += DebugMessage + TEXT("\n");
 
         p = Info;
         ChkLen = 0;
@@ -1966,20 +1971,32 @@ void ACheckPW::CalcPass(const char* Pwd, int Quiet)
             ChkLen += p->Length;
             //printf("  Length %d  Entropy %6.3f (%.2f) ", p->Length, p->Entrpy, p->Entrpy * 0.301029996);
             DebugMessage = FString::Printf(TEXT("%s  Length: %d  Entropy: %.3f (%.2f)"), *TypeMessage, p->Length, p->Entrpy, p->Entrpy * 0.301029996);
-            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, DebugMessage);
+
+            // Append the current debug message to AllDebugMessages
+            //AllDebugMessages += DebugMessage + TEXT("\n");
+
+
+            //this->zxcvbnResult2 = AllDebugMessages;
+            GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Blue, DebugMessage);
+            //初期化
+            DebugMessage2 = TEXT("  ");
 
             for (n = 0; n < p->Length; ++n, ++Pwd)
                 //printf("%c", *Pwd);
-                DebugMessage += TCHAR_TO_UTF8(&Pwd[n]);
+                DebugMessage2 += (*Pwd);//ここが文字化けしてる所
             printf("\n");
             p = p->Next;
+            AllDebugMessages += (DebugMessage + DebugMessage2 + TEXT("\n"));
+            this->zxcvbnResult2 = AllDebugMessages;
         }
         ZxcvbnFreeInfo(Info);
         t2.tv_sec -= t1.tv_sec;
         t2.tv_usec -= t1.tv_usec;
         t2.tv_usec += t2.tv_sec * 1000000;
         //printf("    Calculation Time %.2fms\n", t2.tv_usec / 1000.0);
-        DebugMessage = FString::Printf(TEXT("    Calculation Time: %.2f ms"), t2.tv_usec / 1000.0);
+        DebugMessage = FString::Printf(TEXT("Calculation Time: %.2f ms"), t2.tv_usec / 1000.0);
+        AllDebugMessages += DebugMessage + TEXT("\n");
+        this->zxcvbnResult3 = DebugMessage;
         GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, DebugMessage);
 
         if (ChkLen != Len)
@@ -2185,7 +2202,7 @@ int DoChecks(char* file)
 // Copy of main function
 int ACheckPW::RunPasswordChecks(const TArray<FString>& Args)
 {
-    GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Green, TEXT("RunPasswordChecks is Called"));
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("RunPasswordChecks is Called"));
     int i, Quiet, Checks, White;
     Quiet = 0;
     Checks = 0;
@@ -2193,7 +2210,7 @@ int ACheckPW::RunPasswordChecks(const TArray<FString>& Args)
 
 	//渡された文字列をpasswordに代入
 	const char* password = TCHAR_TO_ANSI(*Args[1]);
-	GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Green, FString::Printf(TEXT("Password: %s"), UTF8_TO_TCHAR(password)));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Password: %s"), UTF8_TO_TCHAR(password)));
 
     CalcPass(password, Quiet);
 
