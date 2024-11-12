@@ -38,6 +38,7 @@ void ACheckPW::Tick(float DeltaTime)
 
 }
 
+// エントロピーの計算のみの関数
 double ACheckPW::CheckPasswordStrength(const FString& str)
 {
     ZxcvbnInit();  // zxcvbn初期化
@@ -1895,6 +1896,7 @@ void ACheckPW::CalcPass(const char* Pwd, int Quiet)
 
         gettimeofday(&t1, 0);
         e = ZxcvbnMatch(Pwd, UsrDict, &Info);
+        e = PasswordEntropy;
         gettimeofday(&t2, 0);
         for (p = Info; p; p = p->Next)
             m += p->Entrpy;
@@ -2213,6 +2215,8 @@ int ACheckPW::RunPasswordChecks(const TArray<FString>& Args)
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Password: %s"), UTF8_TO_TCHAR(password)));
 
     CalcPass(password, Quiet);
+    ZxcMatch_t* match = nullptr;
+    PasswordEntropy = ZxcvbnMatch(password, nullptr, &match); 
 
     if (!ZxcvbnInit("zxcvbn.dict"))
     {
@@ -2259,7 +2263,6 @@ int ACheckPW::RunPasswordChecks(const TArray<FString>& Args)
     for (i = 1 + Quiet + White; i < Args.Num(); ++i)
     {
         CalcPass(TCHAR_TO_ANSI(*Args[i]), Quiet);
-        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CalcPass is Called"));
     }
 
     ZxcvbnUnInit();
