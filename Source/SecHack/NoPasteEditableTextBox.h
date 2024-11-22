@@ -13,5 +13,4 @@ UCLASS()
 class SECHACK_API UNoPasteEditableTextBox : public UEditableTextBox
 {
 	GENERATED_BODY()
-	
 };
