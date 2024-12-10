@@ -8,12 +8,12 @@ void UNoPasteEditableTextBox::SynchronizeProperties()
 {
 	Super::SynchronizeProperties();
 
-	if (PWtextbox.IsValid())
-	{
-		// Disable paste functionality by overriding behavior
-		PWtextbox->SetOnTextCommitted(FOnTextCommitted::CreateLambda([](const FText& Text, ETextCommit::Type CommitType)
-			{
-				// Custom logic for commit, if needed
-			}));
-	}
+	//if (PWtextbox.IsValid())
+	//{
+	//	// Disable paste functionality by overriding behavior
+	//	PWtextbox->SetOnTextCommitted(FOnTextCommitted::CreateLambda([](const FText& Text, ETextCommit::Type CommitType)
+	//		{
+	//			// Custom logic for commit, if needed
+	//		}));
+	//}
 }

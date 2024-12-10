@@ -1920,28 +1920,28 @@ void ACheckPW::CalcPass(const char* Pwd, int Quiet)
             FString TypeMessage;
             switch ((int)p->Type)
             {
-            case BRUTE_MATCH: TypeMessage = TEXT("  Type: Bruteforce"); break;
-            case DICTIONARY_MATCH: TypeMessage = TEXT("  Type: Dictionary"); break;
-            case DICT_LEET_MATCH: TypeMessage = TEXT("  Type: Dict+Leet"); break;
-            case USER_MATCH: TypeMessage = TEXT("  Type: User Words"); break;
-            case USER_LEET_MATCH: TypeMessage = TEXT("  Type: User+Leet"); break;
-            case REPEATS_MATCH: TypeMessage = TEXT("  Type: Repeated"); break;
-            case SEQUENCE_MATCH: TypeMessage = TEXT("  Type: Sequence"); break;
-            case SPATIAL_MATCH: TypeMessage = TEXT("  Type: Spatial"); break;
-            case DATE_MATCH: TypeMessage = TEXT("  Type: Date"); break;
-            case YEAR_MATCH: TypeMessage = TEXT("  Type: Year"); break;
-            case LONG_PWD_MATCH: TypeMessage = TEXT("  Type: Extra-long"); break;
-            case BRUTE_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Bruteforce(Rep)"); break;
-            case DICTIONARY_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Dictionary(Rep)"); break;
-            case DICT_LEET_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Dict+Leet(Rep)"); break;
-            case USER_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: User Words(Rep)"); break;
-            case USER_LEET_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: User+Leet(Rep)"); break;
-            case REPEATS_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Repeated(Rep)"); break;
-            case SEQUENCE_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Sequence(Rep)"); break;
-            case SPATIAL_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Spatial(Rep)"); break;
-            case DATE_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Date(Rep)"); break;
-            case YEAR_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Year(Rep)"); break;
-            case LONG_PWD_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Extra-long(Rep)"); break;
+            case BRUTE_MATCH: TypeMessage = TEXT("  Type: Bruteforce"); break;                              //ブルートフォース
+			case DICTIONARY_MATCH: TypeMessage = TEXT("  Type: Dictionary"); break;         		        //よく使われるパスワード
+			case DICT_LEET_MATCH: TypeMessage = TEXT("  Type: Dict+Leet"); break;                           //よく使われるパスワード（leet変換）       
+			case USER_MATCH: TypeMessage = TEXT("  Type: User Words"); break;                               //ユーザー名     
+			case USER_LEET_MATCH: TypeMessage = TEXT("  Type: User+Leet"); break;						    //ユーザー名（leet変換）  
+			case REPEATS_MATCH: TypeMessage = TEXT("  Type: Repeated"); break;							    //繰り返し
+			case SEQUENCE_MATCH: TypeMessage = TEXT("  Type: Sequence"); break;							    //連続
+			case SPATIAL_MATCH: TypeMessage = TEXT("  Type: Spatial"); break;							    //キーボード上の隣接するキー
+			case DATE_MATCH: TypeMessage = TEXT("  Type: Date"); break;								        //日付
+			case YEAR_MATCH: TypeMessage = TEXT("  Type: Year"); break;								        //年
+			case LONG_PWD_MATCH: TypeMessage = TEXT("  Type: Extra-long"); break;						    //長いパスワード
+			case BRUTE_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Bruteforce(Rep)"); break;        //ブルートフォース(繰り返し)
+			case DICTIONARY_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Dictionary(Rep)"); break;   //よく使われるパスワード(繰り返し)
+			case DICT_LEET_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Dict+Leet(Rep)"); break;	    //よく使われるパスワード（leet変換）(繰り返し)
+			case USER_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: User Words(Rep)"); break;		    //ユーザー名(繰り返し)
+			case USER_LEET_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: User+Leet(Rep)"); break;	    //ユーザー名（leet変換）(繰り返し)
+			case REPEATS_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Repeated(Rep)"); break;		//繰り返し(繰り返し)
+			case SEQUENCE_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Sequence(Rep)"); break;		//連続(繰り返し)
+			case SPATIAL_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Spatial(Rep)"); break;         //キーボード上の隣接するキー(繰り返し)
+			case DATE_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Date(Rep)"); break;               //日付(繰り返し)
+			case YEAR_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Year(Rep)"); break;			    //年(繰り返し)
+			case LONG_PWD_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Extra-long(Rep)"); break;	    //長いパスワード(繰り返し)
             
             default: TypeMessage = FString::Printf(TEXT("  Type: Unknown%d"), p->Type); break;
 
