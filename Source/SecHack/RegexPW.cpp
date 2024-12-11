@@ -104,6 +104,36 @@ void ARegexPW::SameWithWeakPassword(const FString& InputString)
 	}
 }
 
+// Compare with Generic Error Based Payloads
+void ARegexPW::SameWithGenericErrorBasedPayloads(const FString& InputString)
+{
+	//show debug message
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("SameWithGenericErrorBasedPayloads Called"));
+
+	FString FilePath = FPaths::ProjectDir() + TEXT("GenericErrorBasedPayloads.csv");
+	TArray<FString> FileContent;
+
+	// Compare with Generic Error Based Payloads
+	if (FFileHelper::LoadFileToStringArray(FileContent, *FilePath))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Suceed to load SameWithGenericErrorBasedPayloads Function"));
+		for (const FString& Line : FileContent)
+		{
+			// Šes‚Ì•¶Žš—ñ‚ð”äŠr
+			if (Line.Equals(InputString))
+			{
+				SameWithGenericErrorBasedPayloadsFlag = true; // ˆê’v‚·‚é•¶Žš—ñ‚ªŒ©‚Â‚©‚Á‚½ê‡
+				break;
+			}
+		}
+	}
+	else
+	{
+		//UE_LOG(LogTemp, Error, TEXT("Failed to load file: %s"), *FilePath);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Failed to load file"));
+	}
+}
+
 void ARegexPW::noRegexFlags(const FString& InputString)
 {
 	if(SymbolCount == 0)

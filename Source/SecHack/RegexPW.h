@@ -35,12 +35,18 @@ public:
 	void SameWithWeakPassword(const FString& str);
 
 	UFUNCTION(BlueprintCallable, Category = "MyCategory")
+	void SameWithGenericErrorBasedPayloads(const FString& str);
+
+	UFUNCTION(BlueprintCallable, Category = "MyCategory")
 	void noRegexFlags(const FString& str);
 
 	//Valiavle can call and edit from Blueprint
 	// Flag for compare with 500-worst-password
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
 	bool SameWith500WeakPWFlag;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
+	bool SameWithGenericErrorBasedPayloadsFlag;
 
 	// Count of Symbol
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
