@@ -100,7 +100,7 @@ void ARegexPW::SameWithWeakPassword(const FString& InputString)
 	else
 	{
 		//UE_LOG(LogTemp, Error, TEXT("Failed to load file: %s"), *FilePath);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Failed to load file"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Failed to load 500-weak-password.csv"));
 	}
 }
 
@@ -130,7 +130,7 @@ void ARegexPW::SameWithGenericErrorBasedPayloads(const FString& InputString)
 	else
 	{
 		//UE_LOG(LogTemp, Error, TEXT("Failed to load file: %s"), *FilePath);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Failed to load file"));
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Failed to load GenericErrorBasedPayloads.csv"));
 	}
 }
 

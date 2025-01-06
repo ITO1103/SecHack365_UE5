@@ -6,6 +6,25 @@
 #include "GameFramework/Actor.h"
 #include "RegexPW.generated.h"
 
+//ç\ë¢ëÃíËã`
+USTRUCT(BlueprintType)
+struct FWeakPasswordRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Password;
+};
+
+USTRUCT(BlueprintType)
+struct FGenericErrorPayloadRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Payload;
+};
+
 UCLASS()
 class SECHACK_API ARegexPW : public AActor
 {
