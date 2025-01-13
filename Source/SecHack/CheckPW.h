@@ -45,6 +45,9 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
     FString zxcvbnResult3;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MyCategory")
+    int zxcvbnResult4;
+
 private:
     void CalcPass(const char* Pwd, int Quiet);
 

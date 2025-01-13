@@ -1882,7 +1882,7 @@ const char* UsrDict[] =
 
 void ACheckPW::CalcPass(const char* Pwd, int Quiet)
 {
-    GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Green, TEXT("CalsPass is Called"));
+    GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("CalsPass is Called"));
     double e;
     FString AllDebugMessages;
     FString DebugMessage2;
@@ -1907,7 +1907,7 @@ void ACheckPW::CalcPass(const char* Pwd, int Quiet)
         FString DebugMessage = FString::Printf(TEXT("Pass: %s\tLength: %d\tEntropy bits=%.3f log10=%.3f\tMulti-word extra bits=%.1f"), UTF8_TO_TCHAR(Pwd), Len, e, e * 0.301029996, m);
         GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, DebugMessage);
 		this->zxcvbnResult1 = DebugMessage;
-		GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Green, zxcvbnResult1);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, zxcvbnResult1);
 
         // Initialize AllDebugMessages with the first debug message
         //AllDebugMessages += DebugMessage + TEXT("\n");
@@ -1917,33 +1917,57 @@ void ACheckPW::CalcPass(const char* Pwd, int Quiet)
         while (p)
         {
             int n;
+            // index of case
+            int causebruteforce = 0;
+            int causedictionary = 0;
+            int causedictleet = 0;
+            int causewords = 0;
+            int causeuserleet = 0;
+            int causerepeats = 0;
+            int causesequence = 0;
+            int causespatial = 0;
+            int causedate = 0;
+            int causeyear = 0;
+            int causelongpwd = 0;
+            int causebruteforcerep = 0;
+            int causedictionaryrep = 0;
+            int causedictleetrep = 0;
+            int causewordsrep = 0;
+            int causeuserleetrep = 0;
+            int causeuserwordsrep = 0;
+            int causerepeatsrep = 0;
+            int causesequencerep = 0;
+            int causespatialrep = 0;
+            int causedaterep = 0;
+            int causeyearrep = 0;
+            int causelongpwdrep = 0;
             FString TypeMessage;
             switch ((int)p->Type)
             {
-            case BRUTE_MATCH: TypeMessage = TEXT("  Type: Bruteforce"); break;                              //ブルートフォース
-			case DICTIONARY_MATCH: TypeMessage = TEXT("  Type: Dictionary"); break;         		        //よく使われるパスワード
-			case DICT_LEET_MATCH: TypeMessage = TEXT("  Type: Dict+Leet"); break;                           //よく使われるパスワード（leet変換）       
-			case USER_MATCH: TypeMessage = TEXT("  Type: User Words"); break;                               //ユーザー名     
-			case USER_LEET_MATCH: TypeMessage = TEXT("  Type: User+Leet"); break;						    //ユーザー名（leet変換）  
-			case REPEATS_MATCH: TypeMessage = TEXT("  Type: Repeated"); break;							    //繰り返し
-			case SEQUENCE_MATCH: TypeMessage = TEXT("  Type: Sequence"); break;							    //連続
-			case SPATIAL_MATCH: TypeMessage = TEXT("  Type: Spatial"); break;							    //キーボード上の隣接するキー
-			case DATE_MATCH: TypeMessage = TEXT("  Type: Date"); break;								        //日付
-			case YEAR_MATCH: TypeMessage = TEXT("  Type: Year"); break;								        //年
-			case LONG_PWD_MATCH: TypeMessage = TEXT("  Type: Extra-long"); break;						    //長いパスワード
-			case BRUTE_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Bruteforce(Rep)"); break;        //ブルートフォース(繰り返し)
-			case DICTIONARY_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Dictionary(Rep)"); break;   //よく使われるパスワード(繰り返し)
-			case DICT_LEET_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Dict+Leet(Rep)"); break;	    //よく使われるパスワード（leet変換）(繰り返し)
-			case USER_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: User Words(Rep)"); break;		    //ユーザー名(繰り返し)
-			case USER_LEET_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: User+Leet(Rep)"); break;	    //ユーザー名（leet変換）(繰り返し)
-			case REPEATS_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Repeated(Rep)"); break;		//繰り返し(繰り返し)
-			case SEQUENCE_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Sequence(Rep)"); break;		//連続(繰り返し)
-			case SPATIAL_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Spatial(Rep)"); break;         //キーボード上の隣接するキー(繰り返し)
-			case DATE_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Date(Rep)"); break;               //日付(繰り返し)
-			case YEAR_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Year(Rep)"); break;			    //年(繰り返し)
-			case LONG_PWD_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Extra-long(Rep)"); break;	    //長いパスワード(繰り返し)
+            case BRUTE_MATCH:                       TypeMessage = TEXT("  Type: Bruteforce");       causebruteforce++; break;       //ブルートフォース
+            case DICTIONARY_MATCH:                  TypeMessage = TEXT("  Type: Dictionary");       causedictionary++; break;       //よく使われるパスワード
+            case DICT_LEET_MATCH:                   TypeMessage = TEXT("  Type: Dict+Leet");        causedictleet++; break;         //よく使われるパスワード（leet変換）       
+            case USER_MATCH:                        TypeMessage = TEXT("  Type: User Words");       causewords++; break;            //ユーザー名     
+            case USER_LEET_MATCH:                   TypeMessage = TEXT("  Type: User+Leet");        causeuserleet++; break;	        //ユーザー名（leet変換）  
+            case REPEATS_MATCH:                     TypeMessage = TEXT("  Type: Repeated");         causerepeats++; break;	        //繰り返し
+            case SEQUENCE_MATCH:                    TypeMessage = TEXT("  Type: Sequence");         causesequence++; break;	        //連続
+            case SPATIAL_MATCH:                     TypeMessage = TEXT("  Type: Spatial");          causespatial++; break;	        //キーボード上の隣接するキー
+            case DATE_MATCH:                        TypeMessage = TEXT("  Type: Date");             causedate++; break;	            //日付
+            case YEAR_MATCH:                        TypeMessage = TEXT("  Type: Year");             causeyear++; break;		        //年
+            case LONG_PWD_MATCH:                    TypeMessage = TEXT("  Type: Extra-long");       causelongpwd++; break;	        //長いパスワード
+            case BRUTE_MATCH + MULTIPLE_MATCH:      TypeMessage = TEXT("  Type: Bruteforce(Rep)");  causebruteforcerep++; break;    //ブルートフォース(繰り返し)
+            case DICTIONARY_MATCH + MULTIPLE_MATCH: TypeMessage = TEXT("  Type: Dictionary(Rep)");  causedictionaryrep++; break;    //よく使われるパスワード(繰り返し)
+            case DICT_LEET_MATCH + MULTIPLE_MATCH:  TypeMessage = TEXT("  Type: Dict+Leet(Rep)");   causedictleetrep++; break;	    //よく使われるパスワード（leet変換）(繰り返し)
+            case USER_MATCH + MULTIPLE_MATCH:       TypeMessage = TEXT("  Type: User Words(Rep)");  causeuserwordsrep++; break;		//ユーザー名(繰り返し)
+            case USER_LEET_MATCH + MULTIPLE_MATCH:  TypeMessage = TEXT("  Type: User+Leet(Rep)");   causeuserleetrep++; break;	    //ユーザー名（leet変換）(繰り返し)
+            case REPEATS_MATCH + MULTIPLE_MATCH:    TypeMessage = TEXT("  Type: Repeated(Rep)");    causerepeatsrep++; break;		//繰り返し(繰り返し)
+            case SEQUENCE_MATCH + MULTIPLE_MATCH:   TypeMessage = TEXT("  Type: Sequence(Rep)");    causesequencerep++; break;		//連続(繰り返し)
+            case SPATIAL_MATCH + MULTIPLE_MATCH:    TypeMessage = TEXT("  Type: Spatial(Rep)");     causespatialrep++; break;       //キーボード上の隣接するキー(繰り返し)
+            case DATE_MATCH + MULTIPLE_MATCH:       TypeMessage = TEXT("  Ty　pe: Date(Rep)");      causedaterep++; break;          //日付(繰り返し)
+            case YEAR_MATCH + MULTIPLE_MATCH:       TypeMessage = TEXT("  Type: Year(Rep)");        causeyearrep++; break;			//年(繰り返し)
+            case LONG_PWD_MATCH + MULTIPLE_MATCH:   TypeMessage = TEXT("  Type: Extra-long(Rep)"); causelongpwdrep++; break;	    //長いパスワード(繰り返し)
             
-            default: TypeMessage = FString::Printf(TEXT("  Type: Unknown%d"), p->Type); break;
+            default: TypeMessage = FString::Printf(TEXT("  Type: Unknown%d"), p->Type); causelongpwdrep++; break;
 
             //case BRUTE_MATCH:                     printf("  Type: Bruteforce     ");   break;
             //case DICTIONARY_MATCH:                printf("  Type: Dictionary     ");   break;
@@ -1977,9 +2001,23 @@ void ACheckPW::CalcPass(const char* Pwd, int Quiet)
             // Append the current debug message to AllDebugMessages
             //AllDebugMessages += DebugMessage + TEXT("\n");
 
+            // zxcvbnResult4にindex of caseで一番多いものを格納
+            TArray<int> CaseArray = { causebruteforce, causedictionary, causedictleet, causewords, causeuserleet, causerepeats, causesequence, causespatial, causedate, causeyear, causelongpwd, causebruteforcerep, causedictionaryrep, causedictleetrep, causewordsrep, causeuserleetrep, causeuserwordsrep, causerepeatsrep, causesequencerep, causespatialrep, causedaterep, causeyearrep, causelongpwdrep };
+            // zxcvbnResult4にindex of caseで一番多いものを格納
+            int MaxIndex = 0;
+            int MaxValue = 0;
+            for (int i = 0; i < CaseArray.Num(); i++)
+            {
+                if (MaxValue < CaseArray[i])
+                {
+					MaxValue = CaseArray[i];
+					MaxIndex = i;
+				}
+			}
+            this->zxcvbnResult4 = MaxIndex;
 
             //this->zxcvbnResult2 = AllDebugMessages;
-            GEngine->AddOnScreenDebugMessage(-1, 50.f, FColor::Blue, DebugMessage);
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, DebugMessage);
             //初期化
             DebugMessage2 = TEXT("  ");
 
