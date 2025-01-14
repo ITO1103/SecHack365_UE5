@@ -1893,6 +1893,32 @@ void ACheckPW::CalcPass(const char* Pwd, int Quiet)
         struct timeval t1, t2;
         ZxcMatch_t* Info, * p;
         double m = 0.0;
+        // index of case
+        int causebruteforce = 0;
+        int causedictionary = 0;
+        int causedictleet = 0;
+        int causewords = 0;
+        int causeuserleet = 0;
+        int causerepeats = 0;
+        int causesequence = 0;
+        int causespatial = 0;
+        int causedate = 0;
+        int causeyear = 0;
+        int causelongpwd = 0;
+        int causebruteforcerep = 0;
+        int causedictionaryrep = 0;
+        int causedictleetrep = 0;
+        int causewordsrep = 0;
+        int causeuserleetrep = 0;
+        int causeuserwordsrep = 0;
+        int causerepeatsrep = 0;
+        int causesequencerep = 0;
+        int causespatialrep = 0;
+        int causedaterep = 0;
+        int causeyearrep = 0;
+        int causelongpwdrep = 0;
+        int MaxIndex = 0;
+        int MaxValue = 0;
 
         gettimeofday(&t1, 0);
         e = ZxcvbnMatch(Pwd, UsrDict, &Info);
@@ -1917,30 +1943,7 @@ void ACheckPW::CalcPass(const char* Pwd, int Quiet)
         while (p)
         {
             int n;
-            // index of case
-            int causebruteforce = 0;
-            int causedictionary = 0;
-            int causedictleet = 0;
-            int causewords = 0;
-            int causeuserleet = 0;
-            int causerepeats = 0;
-            int causesequence = 0;
-            int causespatial = 0;
-            int causedate = 0;
-            int causeyear = 0;
-            int causelongpwd = 0;
-            int causebruteforcerep = 0;
-            int causedictionaryrep = 0;
-            int causedictleetrep = 0;
-            int causewordsrep = 0;
-            int causeuserleetrep = 0;
-            int causeuserwordsrep = 0;
-            int causerepeatsrep = 0;
-            int causesequencerep = 0;
-            int causespatialrep = 0;
-            int causedaterep = 0;
-            int causeyearrep = 0;
-            int causelongpwdrep = 0;
+            
             FString TypeMessage;
             switch ((int)p->Type)
             {
@@ -2001,21 +2004,6 @@ void ACheckPW::CalcPass(const char* Pwd, int Quiet)
             // Append the current debug message to AllDebugMessages
             //AllDebugMessages += DebugMessage + TEXT("\n");
 
-            // zxcvbnResult4にindex of caseで一番多いものを格納
-            TArray<int> CaseArray = { causebruteforce, causedictionary, causedictleet, causewords, causeuserleet, causerepeats, causesequence, causespatial, causedate, causeyear, causelongpwd, causebruteforcerep, causedictionaryrep, causedictleetrep, causewordsrep, causeuserleetrep, causeuserwordsrep, causerepeatsrep, causesequencerep, causespatialrep, causedaterep, causeyearrep, causelongpwdrep };
-            // zxcvbnResult4にindex of caseで一番多いものを格納
-            int MaxIndex = 0;
-            int MaxValue = 0;
-            for (int i = 0; i < CaseArray.Num(); i++)
-            {
-                if (MaxValue < CaseArray[i])
-                {
-					MaxValue = CaseArray[i];
-					MaxIndex = i;
-				}
-			}
-            this->zxcvbnResult4 = MaxIndex;
-
             //this->zxcvbnResult2 = AllDebugMessages;
             GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, DebugMessage);
             //初期化
@@ -2029,6 +2017,22 @@ void ACheckPW::CalcPass(const char* Pwd, int Quiet)
             AllDebugMessages += (DebugMessage + DebugMessage2 + TEXT("\n"));
             this->zxcvbnResult2 = AllDebugMessages;
         }
+		// section of weak leason index calculation
+		// zxcvbnResult4にindex of caseで一番多いものを格納
+        TArray<int> CaseArray = { causebruteforce, causedictionary, causedictleet, causewords, causeuserleet, causerepeats, causesequence, causespatial, causedate, causeyear, causelongpwd, causebruteforcerep, causedictionaryrep, causedictleetrep, causewordsrep, causeuserleetrep, causeuserwordsrep, causerepeatsrep, causesequencerep, causespatialrep, causedaterep, causeyearrep, causelongpwdrep };
+        // zxcvbnResult4にindex of caseで一番多いものを格納
+        for (int i = 0; i < CaseArray.Num(); i++)
+        {
+            if (MaxValue < CaseArray[i])
+            {
+                MaxValue = CaseArray[i];
+                MaxIndex = i;
+            }
+        }
+        this->zxcvbnResult4 = MaxIndex;
+        GEngine->AddOnScreenDebugMessage(-1, 1115.f, FColor::Green, FString::Printf(TEXT("Case: %d"), causedictionary));
+
+
         ZxcvbnFreeInfo(Info);
         t2.tv_sec -= t1.tv_sec;
         t2.tv_usec -= t1.tv_usec;
