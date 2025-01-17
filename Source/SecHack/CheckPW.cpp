@@ -2043,10 +2043,11 @@ void ACheckPW::CalcPass(const char* Pwd, int Quiet)
         this->zxcvbnResult3 = DebugMessage;
         GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, DebugMessage);
 
-        if (ChkLen != Len)
+        if (ChkLen != Len) {
             //printf("*** Password length (%d) != sum of length of parts (%d) ***\n", Len, ChkLen);
             DebugMessage = FString::Printf(TEXT("*** Password length (%d) != sum of length of parts (%d) ***"), Len, ChkLen);
             GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, DebugMessage);
+        }
     }
     else
     {
@@ -2252,8 +2253,11 @@ int ACheckPW::RunPasswordChecks(const TArray<FString>& Args)
     Checks = 0;
     White = 0;
 
-	//渡された文字列をpasswordに代入
-	const char* password = TCHAR_TO_ANSI(*Args[1]);
+    std::string passwordStr = TCHAR_TO_ANSI(*Args[1]);
+
+    //渡された文字列をpasswordに代入
+    const char* password = passwordStr.c_str();
+    //const char* password = TCHAR_TO_ANSI(*Args[1]);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("Password: %s"), UTF8_TO_TCHAR(password)));
 
     CalcPass(password, Quiet);
