@@ -3,11 +3,11 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class SecHackEditorTarget : TargetRules
+public class S4FE_PARTYTarget : TargetRules
 {
-	public SecHackEditorTarget(TargetInfo Target) : base(Target)
+	public S4FE_PARTYTarget(TargetInfo Target) : base(Target)
 	{
-		Type = TargetType.Editor;
+		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
 
 		ExtraModuleNames.AddRange( new string[] { "SecHack" } );
